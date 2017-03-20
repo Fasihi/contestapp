@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320082704) do
+ActiveRecord::Schema.define(version: 20170320085320) do
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "shopify_account_url"
@@ -19,6 +19,34 @@ ActiveRecord::Schema.define(version: 20170320082704) do
     t.string   "shopify_shared_secret"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+  end
+
+  create_table "order_items", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.integer  "order_id"
+    t.integer  "variant_id"
+    t.integer  "shopify_product_id"
+    t.integer  "shopify_variant_id"
+    t.float    "unit_price",         limit: 24
+    t.integer  "quantity"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.index ["order_id"], name: "index_order_items_on_order_id", using: :btree
+    t.index ["shopify_variant_id"], name: "index_order_items_on_shopify_variant_id", using: :btree
+    t.index ["variant_id"], name: "index_order_items_on_variant_id", using: :btree
+  end
+
+  create_table "orders", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "number"
+    t.string   "email"
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "shopify_order_id"
+    t.datetime "order_date"
+    t.float    "total",            limit: 24
+    t.integer  "line_item_count"
+    t.string   "financial_status"
+    t.datetime "created_at",                  null: false
+    t.datetime "updated_at",                  null: false
   end
 
   create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
