@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170320070847) do
+ActiveRecord::Schema.define(version: 20170320082704) do
 
   create_table "accounts", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
     t.string   "shopify_account_url"
@@ -19,6 +19,29 @@ ActiveRecord::Schema.define(version: 20170320070847) do
     t.string   "shopify_shared_secret"
     t.datetime "created_at",            null: false
     t.datetime "updated_at",            null: false
+  end
+
+  create_table "products", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.string   "name"
+    t.bigint   "shopify_product_id"
+    t.datetime "last_shopify_sync"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  create_table "variants", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8" do |t|
+    t.bigint   "product_id"
+    t.bigint   "shopify_variant_id"
+    t.string   "option1"
+    t.string   "option2"
+    t.string   "option3"
+    t.string   "sku"
+    t.string   "barcode"
+    t.float    "price",              limit: 24
+    t.datetime "last_shopify_sync"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.index ["product_id"], name: "index_variants_on_product_id", using: :btree
   end
 
 end
